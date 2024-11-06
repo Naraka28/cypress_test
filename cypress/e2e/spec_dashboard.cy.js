@@ -16,6 +16,13 @@ describe('Sidebar Navigation Tests', () => {
             cy.get('.bg-blue-500').click()
 
            })
+
+           it('existe boton añadir cita', () => {
+            cy.url().should('include', '/dashboard')
+            cy.get("[id='añadirBtn']").should('exist')
+          
+
+           })
     
     
     
