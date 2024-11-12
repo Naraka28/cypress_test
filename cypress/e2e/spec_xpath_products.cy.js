@@ -6,8 +6,7 @@ describe("template spec", () => {
   const appointments = {};
   const products = {
     link: '//*[@id="root"]/div/div/div/ul[1]/a[3]/li/div/div[2]/span',
-    addBtn:
-      '//*[@id="root"]/div/main/div[2]/div/div[3]/div/table/tbody/tr[1]/td[5]/div/button[1]',
+    addBtn: '//*[@id="añadirBtn"]',
     modalEditXpath: '//*[@id="root"]/div/main/div[2]/div[4]/div/div',
     nameXpath: '//*[@id="nombre"]',
     cantidadXpath: '//*[@id="cantidad"]',
@@ -157,7 +156,7 @@ describe("template spec", () => {
     cy.xpath(products.editBtnXpath).click();
     cy.xpath(products.modalEditXpath).should("exist");
     cy.xpath(products.cantidadXpath).should("exist");
-    cy.xpath(products.cantidadXpath).clear().type("22");
+    cy.xpath(products.cantidadXpath).clear().type(22);
   });
 
   it("Modal edit field precio", () => {
@@ -180,10 +179,52 @@ describe("template spec", () => {
     cy.xpath(products.saveEditXpath).click();
     cy.get(products.confirmBtn).click();
   });
+  it.only("Cancel a save edit", () => {
+    cy.visit("http://127.0.0.1:5173/products");
+    cy.xpath(products.editBtnXpath).click();
+    cy.xpath(products.modalEditXpath).should("exist");
+    cy.xpath(products.nameXpath).should("exist");
+    cy.xpath(products.nameXpath).clear().type("acondicionadorTesting");
+    cy.xpath(products.cantidadXpath).should("exist");
+    cy.xpath(products.cantidadXpath).clear().type(22);
+    cy.xpath(products.precioXpath).should("exist");
+    cy.xpath(products.precioXpath).clear().type(33);
+    cy.xpath(products.saveEditXpath).click();
+    cy.get(products.cancelBtn).click();
+  });
+  it("Add product", () => {
+    cy.visit("http://127.0.0.1:5173/products");
+    cy.xpath(products.addBtn).click();
+    cy.xpath(products.addModalXpath).should("exist");
+    cy.xpath(products.nameXpath).should("exist");
+    cy.xpath(products.nameXpath).clear().type("Acondicionador de platano");
+    cy.xpath(products.cantidadXpath).should("exist");
+    cy.xpath(products.cantidadXpath).clear().type(13);
+    cy.xpath(products.precioXpath).should("exist");
+    cy.xpath(products.precioXpath).clear().type(79);
+    cy.xpath(products.saveAddXpath).click();
+  });
+  it.only("Cancel the add product", () => {
+    cy.visit("http://127.0.0.1:5173/products");
+    cy.xpath(products.addBtn).click();
+    cy.xpath(products.addModalXpath).should("exist");
+    cy.xpath(products.nameXpath).should("exist");
+    cy.xpath(products.nameXpath).clear().type("Acondicionador de platano");
+    cy.xpath(products.cantidadXpath).should("exist");
+    cy.xpath(products.cantidadXpath).clear().type(13);
+    cy.xpath(products.precioXpath).should("exist");
+    cy.xpath(products.precioXpath).clear().type(79);
+    cy.xpath(products.closeAddXpath).click();
+  });
 
-  it.only("Delete product", () => {
+  it("Delete product", () => {
     cy.visit("http://127.0.0.1:5173/products");
     cy.xpath(products.deleteBtnXpath).click();
     cy.get(products.confirmBtn).click();
+  });
+  it.only("Cancel delete product", () => {
+    cy.visit("http://127.0.0.1:5173/products");
+    cy.xpath(products.deleteBtnXpath).click();
+    cy.get(products.cancelBtn).click();
   });
 });

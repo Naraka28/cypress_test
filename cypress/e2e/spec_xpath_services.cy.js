@@ -20,7 +20,7 @@ describe("template spec", () => {
     saveChangesXpath:
       '//*[@id="root"]/div/main/div[2]/div[4]/div/div/div[3]/button[2]',
     closeXpath:
-      '//*[@id="root"]/div/main/div[2]/div[4]/div/div/div[3]/button[1]',
+      '//*[@id="root"]/div/main/div[2]/div[2]/div[2]/div[1]/div/div/div[3]/button[1]',
     tableXpath: '//*[@id="root"]/div/main/div[2]/div[3]/table',
     modalEditXpath: '//*[@id="root"]/div/main/div[2]/div[4]/div/div',
     saveAddXpath:
@@ -109,6 +109,7 @@ describe("template spec", () => {
   });
   it("Save edit", () => {
     cy.visit("http://127.0.0.1:5173/services");
+    cy.xpath(services.editBtnXpath).should("exist");
     cy.xpath(services.editBtnXpath).click();
     cy.xpath(services.modalEditXpath).should("exist");
     cy.xpath(services.nameXpath).should("exist");
@@ -121,9 +122,25 @@ describe("template spec", () => {
     cy.xpath(services.saveChangesXpath).click();
     cy.get(services.confirmBtn).click();
   });
+  it.only("Cancel a save edit", () => {
+    cy.visit("http://127.0.0.1:5173/services");
+    cy.xpath(services.editBtnXpath).should("exist");
+    cy.xpath(services.editBtnXpath).click();
+    cy.xpath(services.modalEditXpath).should("exist");
+    cy.xpath(services.nameXpath).should("exist");
+    cy.xpath(services.nameXpath).clear().type("Corte cabello testing");
+    cy.xpath(services.durationXpath).should("exist");
+    cy.xpath(services.durationXpath).clear().type("22");
+    cy.xpath(services.priceXpath).should("exist");
+    cy.xpath(services.priceXpath).clear().type(33);
+    cy.xpath(services.saveChangesXpath).should("exist");
+    cy.xpath(services.saveChangesXpath).click();
+    cy.get(services.cancelBtn).click();
+  });
 
   it("Create service", () => {
     cy.visit("http://127.0.0.1:5173/services");
+    cy.xpath(services.addBtn).should("exist");
     cy.xpath(services.addBtn).click();
     cy.xpath(services.modalXpath).should("exist");
     cy.xpath(services.nameXpath).should("exist");
@@ -138,10 +155,34 @@ describe("template spec", () => {
     cy.xpath(services.catalogueComboXpath).select(1);
     cy.xpath(services.saveAddXpath).click();
   });
-
-  it.only("Delete service", () => {
+  it.only("Cancel a create service", () => {
     cy.visit("http://127.0.0.1:5173/services");
+    cy.xpath(services.addBtn).should("exist");
+    cy.xpath(services.addBtn).click();
+    cy.xpath(services.modalXpath).should("exist");
+    cy.xpath(services.nameXpath).should("exist");
+    cy.xpath(services.nameXpath)
+      .clear()
+      .type("Corte cabello ingasatumais test");
+    cy.xpath(services.durationXpath).should("exist");
+    cy.xpath(services.durationXpath).clear().type("45");
+    cy.xpath(services.priceXpath).should("exist");
+    cy.xpath(services.priceXpath).clear().type(330);
+    cy.xpath(services.catalogueComboXpath).should("exist");
+    cy.xpath(services.catalogueComboXpath).select(1);
+    cy.xpath(services.closeXpath).click();
+  });
+
+  it("Delete service", () => {
+    cy.visit("http://127.0.0.1:5173/services");
+    cy.xpath(services.deleteBtnXpath).should("exist");
     cy.xpath(services.deleteBtnXpath).click();
     cy.get(services.confirmBtn).click();
+  });
+  it.only("Delete service", () => {
+    cy.visit("http://127.0.0.1:5173/services");
+    cy.xpath(services.deleteBtnXpath).should("exist");
+    cy.xpath(services.deleteBtnXpath).click();
+    cy.get(services.cancelBtn).click();
   });
 });
